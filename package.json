@@ -1,22 +1,31 @@
 {
-  "name": "truffledb",
+  "name": "uppercutsapi",
   "version": "1.0.0",
   "description": "A REST API for managing PostgreSQL databases. ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bfararjeh/truffleDB.git"
+    "url": "git+https://github.com/bfararjeh/uppercutsAPI.git"
   },
   "author": "Baha Alfararjeh <bahafararjeh@hotmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bfararjeh/truffleDB/issues"
+    "url": "https://github.com/bfararjeh/uppercutsAPI/issues"
   },
-  "homepage": "https://github.com/bfararjeh/truffleDB",
+  "homepage": "https://github.com/bfararjeh/uppercutsAPI",
   "dependencies": {
-    "express": "^5.1.0"
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
