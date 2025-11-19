@@ -1,4 +1,4 @@
-import requests, os, time
+import requests, os, time, csv
 from tqdm import tqdm
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
@@ -18,9 +18,9 @@ class WebScraper():
         start.gg links, then returns a zip that contains tuples consisting of
         the url and the associated start.gg slug. Slug can be None. 
     
-    write_to_csv(zipped=zip, out=str)
+    write_to_csv(zipped=zip, filename=str)
         Takes a zip object and output string, and writes the zip object to a csv
-        file with name "out".
+        file with name "filename".
     '''
 
     def __init__(self):
@@ -50,7 +50,7 @@ class WebScraper():
         print("Scanning URL for tournament pages...")
 
         # all tourney page links are stored in <a> tags within <b> tags
-        soup = BeautifulSoup()
+        soup = BeautifulSoup(response.text, "html.parser")
         bold_tags = soup.find_all("b")
         for b_tag in tqdm(bold_tags, desc="Progress", unit="tag"):
             a_tag = b_tag.find("a")
@@ -104,11 +104,13 @@ class WebScraper():
 
         return zip(url_list, slug_list)
 
-    def write_to_csv(self, zipped: zip, out: str):
-        pass
+    def write_to_csv(self, zipped: zip, filename: str):
+        
+        with open(filename+".csv", "w+", newline="") as out:
+            csv_writer = csv.writer(out)
+            csv_writer.writerow(("Liquidpedia URL", "Start.gg Slug"))
 
-if __name__ == "__main__":
-    # test = WebScraper()
-    # l = test.grab_urls("https://liquipedia.net/fighters/Street_Fighter_6/Tier_2_Tournaments")
-    # test.grab_slugs(l)
-    pass
+            for row in zipped:
+                csv_writer.writerow(row)
+        
+        print(f"Data written to {filename}.csv.")
