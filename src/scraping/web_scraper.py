@@ -73,7 +73,21 @@ class WebScraper():
         print("Scanning URL list for start.gg links...")
 
         for url in tqdm(url_list, desc="Progress", unit="url"):
-            response = requests.get(url)
+            try:
+                response = requests.get(url, timeout=10)
+                if response.status_code == 429:
+                    print(f"Rate limit hit at {url}. Stopping scrape.")
+                    break
+                response.raise_for_status()
+            except requests.exceptions.Timeout:
+                print(f"Timeout fetching {url}. Skipping.")
+                slug_list.append(None)
+                continue
+            except requests.exceptions.RequestException as e:
+                print(f"Error fetching {url}: {e}")
+                slug_list.append(None)
+                continue
+
             soup = BeautifulSoup(response.text, "html.parser")
             links = soup.select("a.external.text")
             slug_found = False

@@ -9,20 +9,15 @@ const PORT = process.env.PORT || 8000;
 // .json() is the middleware were using
 app.use(express.json());
 
-
 // ===== ROUTES =====
 // importing the different routes then mount them
-const userRoutes = require('./routes/users');
-const playerRoutes = require('./routes/players');
-
-app.use('/users', userRoutes);
-app.use('/players', playerRoutes);
+const tournamentRoutes = require('./src/api/routes/tournaments');
+app.use('/tournaments', tournamentRoutes);
 
 // Base route
 app.get('/', (req, res) => {
   res.send('uppercutsAPI is live');
 });
-
 
 // ===== START SERVER =====
 app.listen(PORT, () => {
